@@ -1,43 +1,21 @@
 const app = require('./src/config/server')
+const mensagens = require('./src/models/mensagens')
+const connectMsql = require('./src/config/connectMysql')
 const connection = require('./src/config/connection')
-const Produtos = require('./src/models/produtos')
 
-//SELECT
-app.get("/", async(req,res) => {
-    const resultado =await Produtos.find()
-    res.json(resultado)
-})
 
-//INSERT    
-app.post("/", async (req,res) => {
-    const { nome } = req.body
-
-    let resultado = await Produtos.create({nome, preco})
-
-    res.json(resultado)
-
-})
-//Upadate
-app.put("/:id", async (req,res) => {
-    const {id} = req.params
-    const{nome,preco} = req.body
-
-//1-condição
-    let resultado = await Produtos.updateOne({ _id:id},{
-        nome,preco
-    })
-
-    res.json(resultado)
-
-})
-
-//Delete
-app.delete("/", async(req,res) =>{
-    const{id} = req.body
-
-    let resultado = await Produtos.deleteOne({ _id:id})
-
-    res.json(
-        resultado
-    )
-})
+app.get('/produtos', (req, res) => {
+    connection.query('SELECT * from produtos', (error, result) => {
+        res.json(result ? result : error);
+      });
+    });
+  
+    
+    app.get('/mensagens', async (req, res) => {
+      res.json(await mensagens.find());
+    });
+    
+    app.post('/mensagens', async (req, res) => {
+      const { nome, msg } = req.body;
+      res.json(await mensagens.create({ nome, msg }));
+    });

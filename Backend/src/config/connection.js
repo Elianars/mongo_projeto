@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 
-function connection(){
-    mongoose.connect("mongodb://localhost/Projeto",
-    {useNewUrlParser:true, useUnifiedTopology:true})
-    // ecommmerce é o nome do banco de dados posso escolher qualquer nome
+const connection = () => {
+  mongoose
+    .connect('mongodb://localhost/fseletro', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
     .then(() => {
-        console.log("MongoDB conectou com sucesso")
+      console.log('MongoDB connected');
     })
     .catch((error) => {
-        console.log(error)
-    })
-}
-
-module.exports = connection()
+      console.log(error);
+    });
+};
+module.exports = connection();
 
